@@ -13,6 +13,8 @@ export default class Character {
   created?: string; //Time at which the character was created in the database.
 }
 
+// Normally we should create a class location and use the url
+// to fetch the data related to the location, but here its not needed for this exercise
 interface locationInterface {
   name: string;
   url: string;

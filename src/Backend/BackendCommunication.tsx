@@ -1,5 +1,6 @@
 import { baseUrl, charactersUri } from "../Utils/Constants";
 
+//TODO: CHECK this for characters pagination request
 const api = {
   post: (url: string, body?: string) => {
     return fetch(url, {

@@ -20,18 +20,16 @@ export const fetchCharacterEpic: Epic<RootActions, RootActions, RootState> = (
   return action$.pipe(
     ofType(CharactersActionTypes.FETCH_CHARACTERS),
     switchMap((action, index) => {
-      console.log("FEEEEEEEEEEETCH");
       const url =
-        state.value.characters.info.nextPageUrl == ""
+        state.value.characters.info.next == ""
           ? baseUrl + charactersUri
-          : state.value.characters.info.nextPageUrl;
+          : state.value.characters.info.next;
       return ajax.getJSON(url).pipe(
         map(response => {
           let mappedResponse = response as {
             info: CharactersInfoInterface;
             results: {}[];
           };
-
           return fetchSuccessActionCreator(
             mappedResponse.results.map((result: any) => {
               return mapCharacterJSONtoCharacter(result);
@@ -39,7 +37,10 @@ export const fetchCharacterEpic: Epic<RootActions, RootActions, RootState> = (
             mappedResponse.info
           );
         }),
-        catchError(error => of(fetchErrorActionCreator(error.xhr.response)))
+        catchError(error => {
+          console.log(error);
+          return of(fetchErrorActionCreator(error));
+        })
       );
     })
   );

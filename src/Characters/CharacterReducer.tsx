@@ -5,8 +5,8 @@ import Character from "../Models/Character";
 export interface CharactersInfoInterface {
   count: number;
   pages: number;
-  nextPageUrl: string;
-  prevPageUrl: string;
+  next: string;
+  prev: string;
 }
 
 export interface CharactersState {
@@ -25,8 +25,8 @@ export const initialCharactersState: CharactersState = {
   info: {
     count: 0,
     pages: 0,
-    nextPageUrl: "",
-    prevPageUrl: ""
+    next: "",
+    prev: ""
   }
 };
 
@@ -45,7 +45,8 @@ export const characters: Reducer<CharactersState, CharactersActions> = (
       return {
         ...state,
         isLoading: false,
-        charactersArray: state.charactersArray.concat(action.charactersToPush)
+        charactersArray: state.charactersArray.concat(action.charactersToPush),
+        info: action.info
       };
 
     case CharactersActionTypes.FETCH_ERROR:

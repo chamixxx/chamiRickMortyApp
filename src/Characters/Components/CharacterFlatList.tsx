@@ -79,7 +79,9 @@ class CharacterFlatList extends React.Component<Props, State> {
     }
   };
 
-  handleLoadMore = () => {};
+  handleLoadMore = () => {
+    this.props.fetchCharactersData();
+  };
 
   render() {
     const isRefreshing = true;
@@ -99,14 +101,16 @@ class CharacterFlatList extends React.Component<Props, State> {
           />
         </View>
         <FlatList
-          data={this.props.filteredCharacters}
+          data={this.props.characters}
           refreshing={isRefreshing}
           onEndReached={this.handleLoadMore}
-          onEndReachedThreshold={10}
+          onEndReachedThreshold={1}
           renderItem={({ item, index }) => this.renderOverviewItem(item, index)}
           horizontal={false}
           style={styles.collectionView}
-          keyExtractor={(item: Character, index: number) => item.id!.toString()}
+          keyExtractor={(item: Character, index: number) =>
+            item.id!.toString() + index
+          }
           extraData={this.props.characters}
           ref={(ref: FlatList<Character>) => {
             this.characterFlatListView = ref as any;

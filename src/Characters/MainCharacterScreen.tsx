@@ -62,30 +62,6 @@ export default class MainCharacterScreen extends React.Component<Props, State> {
 }
 
 const styles = StyleSheet.create({
-  parentView: {
-    flex: 1,
-    backgroundColor: "white"
-  },
-  collectionView: {
-    flex: 1
-  },
-  searchBar: {
-    height: 48,
-    margin: 0,
-    marginTop: 8,
-    backgroundColor: "#FFFFFF00",
-    borderRadius: 10,
-    borderTopWidth: 0,
-    marginHorizontal: 8,
-    borderBottomWidth: 0
-  },
-  searchBarText: {
-    fontSize: 15,
-    height: 40,
-    marginVertical: 0,
-    backgroundColor: "#FFFFFF",
-    color: "gray"
-  },
   title: {
     fontSize: 17.5,
     fontWeight: "bold",

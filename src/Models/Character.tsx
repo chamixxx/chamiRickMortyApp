@@ -23,3 +23,20 @@ interface locationInterface {
   name: string;
   url: string;
 }
+
+export function mapCharacterJSONtoCharacter(object: any): Character {
+  let character = new Character();
+  character.id = object.id;
+  character.name = object.name;
+  character.status = object.status;
+  character.species = object.species;
+  character.type = object.type;
+  character.gender = object.gender;
+  character.origin = object.origin;
+  character.location = object.location;
+  character.image = object.image;
+  character.episode = object.episode;
+  character.url = object.url;
+  character.created = object.created;
+  return character;
+}

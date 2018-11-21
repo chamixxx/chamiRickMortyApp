@@ -1,32 +1,57 @@
 import { Reducer } from "redux";
-import { CharactersActions } from "./CharactersAction";
+import { CharactersActions, CharactersActionTypes } from "./CharactersAction";
 import Character from "../Models/Character";
+
+export interface CharactersInfoInterface {
+  count: number;
+  pages: number;
+  nextPageUrl: string;
+  prevPageUrl: string;
+}
 
 export interface CharactersState {
   charactersArray: Character[];
   searchQuery: string;
   filteredCharacters: Character[];
+  isLoading: boolean;
+  info: CharactersInfoInterface;
 }
 
 export const initialCharactersState: CharactersState = {
   charactersArray: [],
   searchQuery: "",
-  filteredCharacters: []
+  filteredCharacters: [],
+  isLoading: false,
+  info: {
+    count: 0,
+    pages: 0,
+    nextPageUrl: "",
+    prevPageUrl: ""
+  }
 };
-
-export enum CharactersActionTypes {
-  UPDATE_CHARACTERS = "[characters] UPDATE_CHARACTERS"
-}
 
 export const characters: Reducer<CharactersState, CharactersActions> = (
   state = initialCharactersState,
   action
 ) => {
   switch (action.type) {
-    case CharactersActionTypes.UPDATE_CHARACTERS:
+    case CharactersActionTypes.FETCH_CHARACTERS:
       return {
         ...state,
+        isLoading: true
+      };
+
+    case CharactersActionTypes.FETCH_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
         charactersArray: state.charactersArray.concat(action.charactersToPush)
+      };
+
+    case CharactersActionTypes.FETCH_ERROR:
+      return {
+        ...state,
+        isLoading: false
       };
     default:
       return state;

@@ -2,12 +2,15 @@ import { combineEpics, createEpicMiddleware } from "redux-observable";
 import rootReducer, { RootState } from "./RootReducer";
 import { createStore, applyMiddleware } from "redux";
 import { CharactersActions } from "../Characters/CharactersAction";
+import { fetchCharacterEpic } from "../Characters/CharactersEpic";
 
-export type RootAction = CharactersActions;
-const rootEpic = combineEpics<RootAction, RootAction, RootState, {}>();
+export type RootActions = CharactersActions;
+const rootEpic = combineEpics<RootActions, RootActions, RootState, {}>(
+  fetchCharacterEpic
+);
 const epicMiddleware = createEpicMiddleware<
-  RootAction,
-  RootAction,
+  RootActions,
+  RootActions,
   RootState,
   {}
 >();

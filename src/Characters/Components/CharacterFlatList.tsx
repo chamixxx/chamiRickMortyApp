@@ -7,7 +7,7 @@ import _ from "lodash";
 import Character from "../../Models/Character";
 import CharacterFlatListCell from "./CharacterFlatListCell";
 import { RootState } from "../../Utils/RootReducer";
-import { RootAction } from "../../Utils/Store";
+import { RootActions } from "../../Utils/Store";
 
 // Interfaces and types
 
@@ -126,7 +126,7 @@ const mapStateToProps = (state: RootState): StateProps => {
 };
 
 const mapDispatchToProps = (
-  dispatch: DispatchProp<RootAction>
+  dispatch: DispatchProp<RootActions>
 ): DispatchProps => {
   return {};
 };

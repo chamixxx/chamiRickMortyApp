@@ -56,7 +56,7 @@ export default class CharacterFlatListCell extends React.PureComponent<
               </Body>
             </Left>
             <Right>
-              <View style={{ flexDirection: "row" }} />
+              <Text>{this.props.item.status!}</Text>
             </Right>
           </CardItem>
         </Card>

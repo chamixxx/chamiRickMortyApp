@@ -34,8 +34,8 @@ export default class MainCharacterScreen extends React.Component<Props, State> {
     return (
       <View
         style={{
-          width: Dimensions.get("window").width,
-          height: Dimensions.get("window").height
+          flex: 1,
+          width: "100%"
         }}
       >
         <View

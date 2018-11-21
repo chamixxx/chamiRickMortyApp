@@ -6,7 +6,10 @@ import _ from "lodash";
 import Character from "../../Models/Character";
 import CharacterFlatListCell from "./CharacterFlatListCell";
 import { RootState } from "../../Utils/RootReducer";
-import { fetchCharactersActionCreator } from "../CharactersAction";
+import {
+  fetchCharactersActionCreator,
+  fetchQueryNameActionCreator
+} from "../CharactersAction";
 
 // Interfaces and types
 
@@ -15,11 +18,11 @@ interface OwnProps {}
 interface StateProps {
   characters: Character[];
   searchQuery: string;
-  filteredCharacters: Character[];
 }
 
 interface DispatchProps {
   fetchCharactersData: () => void;
+  fetchQueryName: (query: string) => void;
 }
 
 type Props = StateProps & DispatchProps & OwnProps;
@@ -49,7 +52,9 @@ class CharacterFlatList extends React.Component<Props, State> {
 
   componentWillReceiveProps(newProps: Props) {}
 
-  handleTouchOnCard = (item: Character) => {};
+  handleTouchOnCard = (item: Character) => {
+    Keyboard.dismiss();
+  };
 
   renderOverviewItem = (item: Character, index: number): JSX.Element => {
     return (
@@ -62,19 +67,9 @@ class CharacterFlatList extends React.Component<Props, State> {
   };
 
   handleSearchQuery = (searchQuery: string) => {
-    const formatedQuery = searchQuery.toUpperCase();
-    let filteredData = _.filter(this.props.characters, character => {
-      if (character.matchingName(formatedQuery) != undefined) {
-        return true;
-      }
-      return false;
-    });
-
-    this.setState({
-      searchQuery: searchQuery,
-      characterDataSourceFiltered: filteredData
-    });
-    if (this.state.characterDataSourceFiltered.length > 0) {
+    const formatedQuery = searchQuery.toLowerCase();
+    this.props.fetchQueryName(searchQuery);
+    if (this.props.characters.length > 0) {
       this.characterFlatListView.scrollToIndex({ animated: false, index: 0 });
     }
   };
@@ -84,17 +79,13 @@ class CharacterFlatList extends React.Component<Props, State> {
   };
 
   render() {
-    const isRefreshing = true;
     return (
       <View style={{ flex: 1 }}>
         <View style={{ backgroundColor: "gray", marginTop: -4 }}>
           <SearchBar
             noIcon
             onChangeText={this.handleSearchQuery}
-            // placeholder={this.props.intl.formatMessage({
-            //   id: "character.list.Search",
-            //   defaultMessage: "Search"
-            // })}
+            placeholder="Search"
             placeholderTextColor={"gray"}
             containerStyle={styles.searchBar}
             inputStyle={styles.searchBarText}
@@ -102,16 +93,15 @@ class CharacterFlatList extends React.Component<Props, State> {
         </View>
         <FlatList
           data={this.props.characters}
-          refreshing={isRefreshing}
           onEndReached={this.handleLoadMore}
-          onEndReachedThreshold={1}
+          onEndReachedThreshold={3}
           renderItem={({ item, index }) => this.renderOverviewItem(item, index)}
           horizontal={false}
           style={styles.collectionView}
           keyExtractor={(item: Character, index: number) =>
             item.id!.toString() + index
           }
-          extraData={this.props.characters}
+          extraData={this.props.characters.length}
           ref={(ref: FlatList<Character>) => {
             this.characterFlatListView = ref as any;
           }}
@@ -127,14 +117,15 @@ class CharacterFlatList extends React.Component<Props, State> {
 const mapStateToProps = (state: RootState): StateProps => {
   return {
     characters: state.characters.charactersArray,
-    searchQuery: state.characters.searchQuery,
-    filteredCharacters: state.characters.filteredCharacters
+    searchQuery: state.characters.searchQuery
   };
 };
 
 const mapDispatchToProps = (dispatch: any): DispatchProps => {
   return {
-    fetchCharactersData: () => dispatch(fetchCharactersActionCreator())
+    fetchCharactersData: () => dispatch(fetchCharactersActionCreator()),
+    fetchQueryName: (query: string) =>
+      dispatch(fetchQueryNameActionCreator(query))
   };
 };
 

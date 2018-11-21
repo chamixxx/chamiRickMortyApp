@@ -1,13 +1,12 @@
 import React from "react";
 import { View, StyleSheet, FlatList, Keyboard, Text } from "react-native";
-import { injectIntl, InjectedIntlProps } from "react-intl";
-import { connect, DispatchProp } from "react-redux";
+import { connect } from "react-redux";
 import { SearchBar } from "react-native-elements";
 import _ from "lodash";
 import Character from "../../Models/Character";
 import CharacterFlatListCell from "./CharacterFlatListCell";
 import { RootState } from "../../Utils/RootReducer";
-import { RootActions } from "../../Utils/Store";
+import { fetchCharactersActionCreator } from "../CharactersAction";
 
 // Interfaces and types
 
@@ -19,9 +18,11 @@ interface StateProps {
   filteredCharacters: Character[];
 }
 
-interface DispatchProps {}
+interface DispatchProps {
+  fetchCharactersData: () => void;
+}
 
-type Props = StateProps & DispatchProps & OwnProps & InjectedIntlProps;
+type Props = StateProps & DispatchProps & OwnProps;
 
 interface State {
   searchQuery: string;
@@ -42,7 +43,9 @@ class CharacterFlatList extends React.Component<Props, State> {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.props.fetchCharactersData();
+  }
 
   componentWillReceiveProps(newProps: Props) {}
 
@@ -86,10 +89,10 @@ class CharacterFlatList extends React.Component<Props, State> {
           <SearchBar
             noIcon
             onChangeText={this.handleSearchQuery}
-            placeholder={this.props.intl.formatMessage({
-              id: "character.list.Search",
-              defaultMessage: "Search"
-            })}
+            // placeholder={this.props.intl.formatMessage({
+            //   id: "character.list.Search",
+            //   defaultMessage: "Search"
+            // })}
             placeholderTextColor={"gray"}
             containerStyle={styles.searchBar}
             inputStyle={styles.searchBarText}
@@ -125,16 +128,16 @@ const mapStateToProps = (state: RootState): StateProps => {
   };
 };
 
-const mapDispatchToProps = (
-  dispatch: DispatchProp<RootActions>
-): DispatchProps => {
-  return {};
+const mapDispatchToProps = (dispatch: any): DispatchProps => {
+  return {
+    fetchCharactersData: () => dispatch(fetchCharactersActionCreator())
+  };
 };
 
 export default connect<StateProps, DispatchProps, OwnProps, RootState>(
   mapStateToProps,
   mapDispatchToProps
-)(injectIntl(CharacterFlatList));
+)(CharacterFlatList);
 
 const styles = StyleSheet.create({
   parentView: {

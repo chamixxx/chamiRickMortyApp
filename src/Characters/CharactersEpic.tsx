@@ -20,6 +20,7 @@ export const fetchCharacterEpic: Epic<RootActions, RootActions, RootState> = (
   return action$.pipe(
     ofType(CharactersActionTypes.FETCH_CHARACTERS),
     switchMap((action, index) => {
+      console.log("FEEEEEEEEEEETCH");
       const url =
         state.value.characters.info.nextPageUrl == ""
           ? baseUrl + charactersUri

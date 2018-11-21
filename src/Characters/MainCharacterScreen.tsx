@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Dimensions } from "react-native";
 import _ from "lodash";
 import CharacterFlatList from "./Components/CharacterFlatList";
 
@@ -32,7 +32,12 @@ export default class MainCharacterScreen extends React.Component<Props, State> {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <View
+        style={{
+          width: Dimensions.get("window").width,
+          height: Dimensions.get("window").height
+        }}
+      >
         <View
           style={{
             backgroundColor: "gray",
@@ -86,11 +91,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#FFFFFF",
     alignSelf: "center"
-  },
-  backButtonImage: {
-    resizeMode: "contain",
-    width: 13.5,
-    height: 24,
-    marginLeft: 25
   }
 });

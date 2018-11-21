@@ -36,11 +36,7 @@ export default class CharacterFlatListCell extends React.PureComponent<
             <Left>
               <Thumbnail
                 source={{
-                  uri:
-                    "file://" +
-                    RNFetchBlob.fs.dirs.DocumentDir +
-                    "/" +
-                    this.props.item.imageUrl
+                  uri: this.props.item.image!
                 }}
                 style={{
                   height: 68,
@@ -60,39 +56,7 @@ export default class CharacterFlatListCell extends React.PureComponent<
               </Body>
             </Left>
             <Right>
-              <View style={{ flexDirection: "row" }}>
-                {/* <View
-                  style={{
-                    height: 29,
-                    width: 64,
-                    backgroundColor: this.getRatingInterpretationColor(
-                      this.props.item.rating!
-                    ),
-                    borderRadius: 15,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginRight: 15
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: "white",
-                      alignSelf: "center",
-                      fontSize: 11
-                    }}
-                  >
-                    {this.getRatingInterpretationText(this.props.item.rating!)}
-                  </Text>
-                </View> */}
-                <Image
-                  source={require("../Images/back.png")}
-                  style={{
-                    height: 27,
-                    width: 13.5,
-                    resizeMode: "contain"
-                  }}
-                />
-              </View>
+              <View style={{ flexDirection: "row" }} />
             </Right>
           </CardItem>
         </Card>

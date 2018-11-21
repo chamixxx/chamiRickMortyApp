@@ -12,14 +12,12 @@ export interface CharactersInfoInterface {
 
 export interface CharactersState {
   charactersArray: Character[];
-  searchQuery: string;
   isLoading: boolean;
   info: CharactersInfoInterface;
 }
 
 export const initialCharactersState: CharactersState = {
   charactersArray: [],
-  searchQuery: "",
   isLoading: false,
   info: {
     count: 0,

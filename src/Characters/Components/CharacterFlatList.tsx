@@ -17,7 +17,7 @@ interface OwnProps {}
 
 interface StateProps {
   characters: Character[];
-  searchQuery: string;
+  nextUrl: string;
 }
 
 interface DispatchProps {
@@ -75,7 +75,7 @@ class CharacterFlatList extends React.Component<Props, State> {
   };
 
   handleLoadMore = () => {
-    this.props.fetchCharactersData();
+    if (this.props.nextUrl != "") this.props.fetchCharactersData();
   };
 
   render() {
@@ -117,7 +117,7 @@ class CharacterFlatList extends React.Component<Props, State> {
 const mapStateToProps = (state: RootState): StateProps => {
   return {
     characters: state.characters.charactersArray,
-    searchQuery: state.characters.searchQuery
+    nextUrl: state.characters.info.next
   };
 };
 

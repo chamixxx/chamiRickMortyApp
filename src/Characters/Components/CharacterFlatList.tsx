@@ -1,17 +1,23 @@
 import React from "react";
 import { View, StyleSheet, FlatList, Keyboard, Text } from "react-native";
 import { injectIntl, InjectedIntlProps } from "react-intl";
-import { connect } from "react-redux";
+import { connect, DispatchProp } from "react-redux";
 import { SearchBar } from "react-native-elements";
 import _ from "lodash";
 import Character from "../../Models/Character";
 import CharacterFlatListCell from "./CharacterFlatListCell";
+import { RootState } from "../../Utils/RootReducer";
+import { RootAction } from "../../Utils/Store";
 
 // Interfaces and types
 
 interface OwnProps {}
 
-interface StateProps {}
+interface StateProps {
+  characters: Character[];
+  searchQuery: string;
+  filteredCharacters: Character[];
+}
 
 interface DispatchProps {}
 
@@ -54,8 +60,8 @@ class CharacterFlatList extends React.Component<Props, State> {
 
   handleSearchQuery = (searchQuery: string) => {
     const formatedQuery = searchQuery.toUpperCase();
-    let filteredData = _.filter(this.props.characters, foodItem => {
-      if (foodItem.matchingSynonym(formatedQuery) != undefined) {
+    let filteredData = _.filter(this.props.characters, character => {
+      if (character.matchingName(formatedQuery) != undefined) {
         return true;
       }
       return false;
@@ -70,7 +76,10 @@ class CharacterFlatList extends React.Component<Props, State> {
     }
   };
 
+  handleLoadMore = () => {};
+
   render() {
+    const isRefreshing = true;
     return (
       <View style={{ flex: 1 }}>
         <View style={{ backgroundColor: "gray", marginTop: -4 }}>
@@ -87,7 +96,10 @@ class CharacterFlatList extends React.Component<Props, State> {
           />
         </View>
         <FlatList
-          data={this.state.characterDataSourceFiltered}
+          data={this.props.filteredCharacters}
+          refreshing={isRefreshing}
+          onEndReached={this.handleLoadMore}
+          onEndReachedThreshold={10}
           renderItem={({ item, index }) => this.renderOverviewItem(item, index)}
           horizontal={false}
           style={styles.collectionView}
@@ -105,15 +117,21 @@ class CharacterFlatList extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state: any): StateProps => {
+const mapStateToProps = (state: RootState): StateProps => {
+  return {
+    characters: state.characters.charactersArray,
+    searchQuery: state.characters.searchQuery,
+    filteredCharacters: state.characters.filteredCharacters
+  };
+};
+
+const mapDispatchToProps = (
+  dispatch: DispatchProp<RootAction>
+): DispatchProps => {
   return {};
 };
 
-const mapDispatchToProps = (dispatch: any): DispatchProps => {
-  return {};
-};
-
-export default connect<StateProps, DispatchProps, OwnProps>(
+export default connect<StateProps, DispatchProps, OwnProps, RootState>(
   mapStateToProps,
   mapDispatchToProps
 )(injectIntl(CharacterFlatList));
@@ -148,11 +166,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#FFFFFF",
     alignSelf: "center"
-  },
-  backButtonImage: {
-    resizeMode: "contain",
-    width: 13.5,
-    height: 24,
-    marginLeft: 25
   }
 });

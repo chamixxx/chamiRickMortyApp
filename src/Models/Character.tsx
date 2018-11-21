@@ -11,6 +11,10 @@ export default class Character {
   episode?: string; //List of episodes in which this character appeared.
   url?: string; //Link to the character's own URL endpoint.
   created?: string; //Time at which the character was created in the database.
+
+  matchingName = (formatedQuery: string) => {
+    // TODO: implement matching name for list filtering
+  };
 }
 
 // Normally we should create a class location and use the url

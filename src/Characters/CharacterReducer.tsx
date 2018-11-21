@@ -3,27 +3,30 @@ import { CharactersActions } from "./CharactersAction";
 import Character from "../Models/Character";
 
 export interface CharactersState {
-  characters: Character[];
+  charactersArray: Character[];
   searchQuery: string;
   filteredCharacters: Character[];
 }
 
 export const initialCharactersState: CharactersState = {
-  characters: [],
+  charactersArray: [],
   searchQuery: "",
   filteredCharacters: []
 };
 
-export enum CharactersActionTypes {}
+export enum CharactersActionTypes {
+  UPDATE_CHARACTERS = "[characters] UPDATE_CHARACTERS"
+}
 
 export const characters: Reducer<CharactersState, CharactersActions> = (
   state = initialCharactersState,
   action
 ) => {
   switch (action.type) {
-    case CharactersActionTypes /*.actionType*/:
+    case CharactersActionTypes.UPDATE_CHARACTERS:
       return {
-        ...state
+        ...state,
+        charactersArray: state.charactersArray.concat(action.charactersToPush)
       };
     default:
       return state;

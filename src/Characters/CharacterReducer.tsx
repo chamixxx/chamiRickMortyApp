@@ -1,9 +1,18 @@
 import { Reducer } from "redux";
 import { CharactersActions } from "./CharactersAction";
+import Character from "../Models/Character";
 
-export interface CharactersState {}
+export interface CharactersState {
+  characters: Character[];
+  searchQuery: string;
+  filteredCharacters: Character[];
+}
 
-export const initialCharactersState: CharactersState = {};
+export const initialCharactersState: CharactersState = {
+  characters: [],
+  searchQuery: "",
+  filteredCharacters: []
+};
 
 export enum CharactersActionTypes {}
 

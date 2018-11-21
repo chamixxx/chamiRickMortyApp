@@ -56,7 +56,6 @@ export const fetchSearchQueryEpic: Epic<RootActions, RootActions, RootState> = (
     switchMap((action, index) => {
       const url =
         "https://rickandmortyapi.com/api/character/?name=" + action.query;
-      console.log(url);
 
       return ajax.getJSON(url).pipe(
         map(response => {
@@ -72,6 +71,7 @@ export const fetchSearchQueryEpic: Epic<RootActions, RootActions, RootState> = (
           );
         }),
         catchError((error: AjaxError) => {
+          console.log(error.message);
           return of(fetchErrorActionCreator(error));
         })
       );

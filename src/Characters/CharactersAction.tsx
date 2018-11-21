@@ -26,7 +26,6 @@ export function fetchQuerySuccessActionCreator(
   charactersToReplace: Character[],
   info: CharactersInfoInterface
 ): FetchSuccessAction {
-  console.log(CharactersActionTypes.FETCH_QUERY_SUCCESS);
   return {
     type: CharactersActionTypes.FETCH_QUERY_SUCCESS,
     charactersToPush: charactersToReplace,

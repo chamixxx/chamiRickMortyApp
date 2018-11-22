@@ -1,5 +1,12 @@
 import React from "react";
-import { View, StyleSheet, FlatList, Keyboard, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Keyboard,
+  Text,
+  ActivityIndicator
+} from "react-native";
 import { connect } from "react-redux";
 import { SearchBar } from "react-native-elements";
 import _ from "lodash";
@@ -18,6 +25,7 @@ interface OwnProps {}
 interface StateProps {
   characters: Character[];
   nextUrl: string;
+  isLoading: boolean;
 }
 
 interface DispatchProps {
@@ -69,7 +77,10 @@ class CharacterFlatList extends React.Component<Props, State> {
   handleSearchQuery = (searchQuery: string) => {
     const formatedQuery = searchQuery.toLowerCase();
     this.props.fetchQueryName(searchQuery);
-    if (this.props.characters.length > 0) {
+    if (
+      this.props.characters.length > 0 &&
+      this.characterFlatListView != null
+    ) {
       this.characterFlatListView.scrollToIndex({ animated: false, index: 0 });
     }
   };
@@ -78,19 +89,17 @@ class CharacterFlatList extends React.Component<Props, State> {
     if (this.props.nextUrl != "") this.props.fetchCharactersData();
   };
 
-  render() {
-    return (
-      <View style={{ flex: 1 }}>
-        <View style={{ backgroundColor: "gray", marginTop: -4 }}>
-          <SearchBar
-            noIcon
-            onChangeText={this.handleSearchQuery}
-            placeholder="Search"
-            placeholderTextColor={"gray"}
-            containerStyle={styles.searchBar}
-            inputStyle={styles.searchBarText}
-          />
+  getListOrIndicator = (): JSX.Element => {
+    if (this.props.isLoading) {
+      return (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <ActivityIndicator size="large" color="grey" />
         </View>
+      );
+    } else {
+      return (
         <FlatList
           data={this.props.characters}
           onEndReached={this.handleLoadMore}
@@ -109,6 +118,24 @@ class CharacterFlatList extends React.Component<Props, State> {
           onScrollBeginDrag={() => Keyboard.dismiss()}
           keyboardShouldPersistTaps="handled"
         />
+      );
+    }
+  };
+
+  render() {
+    return (
+      <View style={{ flex: 1 }}>
+        <View style={{ backgroundColor: "gray", marginTop: -4 }}>
+          <SearchBar
+            noIcon
+            onChangeText={this.handleSearchQuery}
+            placeholder="Search"
+            placeholderTextColor={"gray"}
+            containerStyle={styles.searchBar}
+            inputStyle={styles.searchBarText}
+          />
+        </View>
+        {this.getListOrIndicator()}
       </View>
     );
   }
@@ -117,7 +144,8 @@ class CharacterFlatList extends React.Component<Props, State> {
 const mapStateToProps = (state: RootState): StateProps => {
   return {
     characters: state.characters.charactersArray,
-    nextUrl: state.characters.info.next
+    nextUrl: state.characters.info.next,
+    isLoading: state.characters.isLoading
   };
 };
 

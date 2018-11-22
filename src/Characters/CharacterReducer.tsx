@@ -74,12 +74,6 @@ export const characters: Reducer<CharactersState, CharactersActions> = (
         charactersArray: action.charactersToPush,
         info: action.info
       };
-
-    case CharactersActionTypes.FETCH_ERROR:
-      return {
-        ...state,
-        isLoading: false
-      };
     default:
       return state;
   }

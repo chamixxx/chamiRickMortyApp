@@ -33,9 +33,13 @@ export const characters: Reducer<CharactersState, CharactersActions> = (
 ) => {
   switch (action.type) {
     case CharactersActionTypes.FETCH_CHARACTERS:
+      let isLoading = false;
+      if (state.charactersArray.length == 0) {
+        isLoading = true;
+      }
       return {
         ...state,
-        isLoading: true
+        isLoading: isLoading
       };
 
     case CharactersActionTypes.FETCH_QUERY_NAME:

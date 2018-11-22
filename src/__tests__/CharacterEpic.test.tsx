@@ -15,10 +15,10 @@ import { fetchCharacterEpic } from "../Characters/CharactersEpic";
 import { RootState } from "../Utils/RootReducer";
 import { ajax } from "rxjs/ajax";
 
-describe("loadUserEpic", () => {
+describe("fetchCharacters", () => {
   // done: see https://facebook.github.io/jest/docs/asynchronous.html
 
-  it("dispatches a result action when the user is loaded", done => {
+  it("dispatches a result action when characters are fetched", done => {
     const successResult = {
       charactersToPush: [],
       info: initialCharactersState.info

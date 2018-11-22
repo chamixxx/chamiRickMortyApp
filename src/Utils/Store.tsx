@@ -6,6 +6,7 @@ import {
   fetchCharacterEpic,
   fetchSearchQueryEpic
 } from "../Characters/CharactersEpic";
+import { ajax } from "rxjs/ajax";
 
 export type RootActions = CharactersActions;
 const rootEpic = combineEpics<RootActions, RootActions, RootState, {}>(
@@ -17,7 +18,9 @@ const epicMiddleware = createEpicMiddleware<
   RootActions,
   RootState,
   {}
->();
+>({
+  dependencies: { getJSON: ajax.getJSON }
+});
 let store: any;
 store = createStore(rootReducer, applyMiddleware(epicMiddleware));
 epicMiddleware.run(rootEpic);

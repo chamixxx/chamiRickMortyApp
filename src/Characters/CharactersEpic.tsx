@@ -22,7 +22,9 @@ export const fetchCharacterEpic: Epic<RootActions, RootActions, RootState> = (
   return action$.pipe(
     ofType(CharactersActionTypes.FETCH_CHARACTERS),
     switchMap((action, index) => {
-      const url = state.value.characters.info.next;
+      const url = state.value
+        ? state.value.characters.info.next
+        : baseUrl + charactersUri;
       return ajax.getJSON(url).pipe(
         map(response => {
           let mappedResponse = response as {

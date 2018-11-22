@@ -65,7 +65,7 @@ export interface fetchQueryNameAction {
   query: string;
 }
 
-interface FetchSuccessAction {
+export interface FetchSuccessAction {
   type:
     | CharactersActionTypes.FETCH_SUCCESS
     | CharactersActionTypes.FETCH_QUERY_SUCCESS;

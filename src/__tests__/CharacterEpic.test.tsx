@@ -1,23 +1,16 @@
 import {
-  FetchSuccessAction,
-  CharactersActionTypes,
   fetchCharactersActionCreator,
   fetchSuccessActionCreator,
   fetchErrorActionCreator
 } from "../Characters/CharactersAction";
-import {
-  initialCharactersState,
-  CharactersState
-} from "../Characters/CharacterReducer";
-import { of, Subject, throwError } from "rxjs";
+import { initialCharactersState } from "../Characters/CharacterReducer";
+import { of, throwError } from "rxjs";
 import { ActionsObservable, StateObservable } from "redux-observable";
 import { fetchCharacterEpic } from "../Characters/CharactersEpic";
 import { RootState } from "../Utils/RootReducer";
 import { ajax } from "rxjs/ajax";
 
 describe("fetchCharacters", () => {
-  // done: see https://facebook.github.io/jest/docs/asynchronous.html
-
   it("dispatches a result action when characters are fetched", done => {
     const successResult = {
       charactersToPush: [],
